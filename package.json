@@ -1,0 +1,29 @@
+{
+  "name": "province-city-area",
+  "version": "0.1.0",
+  "description": "province-city-area",
+  "main": "lib/index.js",
+  "scripts": {
+    "uglify-js": "uglifyjs lib/index.js -o lib/index.js",
+    "uglify-data": "uglifyjs lib/data.js -o lib/data.js",
+    "babel-js": "babel index.js -o lib/index.js",
+    "babel-data": "babel data.js -o lib/data.js",
+    "build": "npm-run-all babel-js babel-data uglify-js uglify-data"
+  },
+  "keywords": [
+    "province-city-area"
+  ],
+  "author": "cq0122",
+  "homepage": "https://github.com/cq0122/province-city-area",
+  "bugs": {
+    "url": "https://github.com/cq0122/province-city-area/issues"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "babel-preset-es2015": "^6.24.1"
+  },
+  "dependencies": {
+    "key-value-equal": "^0.1.1",
+    "lodash": "^4.17.11"
+  }
+}
