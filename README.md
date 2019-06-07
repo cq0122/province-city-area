@@ -1,6 +1,6 @@
 # province-city-area
 
-> 省市区数据工具包
+> 省市区数据工具包，含有省市区三级数据，支持排序和自定义返回的数据属性。
 
 ### 安装
 
@@ -33,7 +33,7 @@ $npm install province-city-area --save
 ##### getProvinces(field, sort)
 
 - filed 返回字段，可选参数，可以传数组，也可以传对象，不传默认返回数据对象的全部属性。
-  例如：`["id", "name", "pinyin"]`，数组元素必须为数据对象中的属性。如果需要更改返回值的对象属性，可以传对象`{id:"value",name:"label"}`，则返回`[{value:"xx1",label:"xx1"},{value:"xx2",label:"xx2"}...]`
+  例如：`["id", "name", "pinyin"]`，数组元素必须为数据对象中的属性。如果需要更改返回值的对象属性，可以传对象`{id:"value",name:"label"}`，则返回`[{value:"xx1",label:"xx1"},{value:"xx2",label:"xx2"}...]`。
 - sort 排序，可选参数，字段和排序规则，不传默认以 id 升序。
   例如：`{id:"asc",pinyin:"desc"}`，对象属性必须为数据对象中的属性，值为 asc 或 desc，使用 lodash 的 orderBy 实现的排序。
 
