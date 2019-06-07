@@ -55,7 +55,6 @@ $npm install province-city-area --save
 import { getProvinces, getCitys, getAreas } from "province-city-area";
 
 getProvinces({ id: "key", name: "label" }, { pinyin: "asc" });
-
 //=> [{"key":"34","label":"安徽"},{"key":"82","label":"澳门"},{"key":"11","label":"北京"},{"key":"50","label":"重庆"},{"key":"35","label":"福建"},{"key":"62","label":"甘肃"},{"key":"44","label":"广东"},{"key":"45","label":"广西"},{"key":"52","label":"贵州"},{"key":"46","label":"海南"},{"key":"13","label":"河北"},{"key":"41","label":"河南"},{"key":"23","label":"黑龙江"},{"key":"42","label":"湖北"},{"key":"43","label":"湖南"},{"key":"22","label":"吉林"},{"key":"32","label":"江苏"},{"key":"36","label":"江西"},{"key":"21","label":"辽宁"},{"key":"15","label":"内蒙古"},{"key":"64","label":"宁夏"},{"key":"63","label":"青海"},{"key":"37","label":"山东"},{"key":"14","label":"山西"},{"key":"61","label":"陕西"},{"key":"31","label":"上海"},{"key":"51","label":"四川"},{"key":"71","label":"台湾"},{"key":"12","label":"天津"},{"key":"54","label":"西藏"},{"key":"81","label":"香港"},{"key":"65","label":"新疆"},{"key":"53","label":"云南"},{"key":"33","label":"浙江"}]
 
 getCitys(42, { id: "i", name: "n" });
