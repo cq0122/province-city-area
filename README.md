@@ -23,8 +23,8 @@ $npm install province-city-area --save
 
 ### 数据说明
 
-- province、area 的区号为 null，city 的区号不为空
-- 台湾、香港、澳门的 city 数据中 name、full_name、short_name 相等
+- province、area 的区号为 null，city 的区号不为空。
+- 台湾、香港、澳门的 city 数据中 name、full_name、short_name 相等。
 
 > 数据为个人整理，难免有遗漏和疏忽，如有错误，欢迎指正，谢谢。
 
