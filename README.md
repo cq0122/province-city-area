@@ -24,7 +24,7 @@ $npm install province-city-area --save
 ### 数据说明
 
 - province、area 的区号为 null，city 的区号不为空。
-- 台湾、香港、澳门的 city 数据中 name、full_name、short_name 相等。
+- 台湾、香港、澳门的 city 数据中 name、full_name、short_name 相同。
 
 > 数据为个人整理，难免有遗漏和疏忽，如有错误，欢迎指正，谢谢。
 
@@ -32,10 +32,9 @@ $npm install province-city-area --save
 
 ##### getProvinces(field, sort)
 
-- filed 返回字段，可选参数，可以传数组，也可以传对象，不传默认返回数据对象的全部属性。
-  例如：`["id", "name", "pinyin"]`，数组元素必须为数据对象中的属性。如果需要更改返回值的对象属性，可以传对象`{id:"value",name:"label"}`，则返回`[{value:"xx1",label:"xx1"},{value:"xx2",label:"xx2"}...]`。
-- sort 排序，可选参数，字段和排序规则，不传默认以 id 升序。
-  例如：`{id:"asc",pinyin:"desc"}`，对象属性必须为数据对象中的属性，值为 asc 或 desc，使用 lodash 的 orderBy 实现的排序。
+- filed 返回数组元素的属性，可选参数。默认返回数据对象的全部属性，支持传数组或对象，数组元素或对象属性必须为数据对象中的属性。例如：`["id", "name", "pinyin"]`，则返回`[{id:"xx1",name:"xx1",pinyin:"xx1"},{id:"xx2",name:"xx2",pinyin:"xx2"}...]`。同时也支持传对象参数更改返回值的对象属性，例如：`{id:"value",name:"label"}`，则返回`[{value:"xx1",label:"xx1"},{value:"xx2",label:"xx2"}...]`。
+
+- sort 字段和排序规则对象，可选参数。默认按 id 升序。例如：`{id:"desc",pinyin:"desc"}`，排序对象的属性必须为数据对象中的属性，属性定义的顺序影响排序的结果，值为 asc 或 desc，排序功能使用 lodash 的 orderBy() 实现，lodash排序功能对中文支持的不好，如果需要按name排序，可以传pinyin。
 
 ##### getCitys(pid, field, sort)
 
@@ -67,4 +66,4 @@ getAreas(4213);
 //=> [{"fullName":"曾都区","id":"421303","name":"曾都","pinyin":"zeng_du","pinyinInitial":"Z"},{"fullName":"随县","id":"421321","name":"随县","pinyin":"sui_xian","pinyinInitial":"S"},{"fullName":"广水市","id":"421381","name":"广水","pinyin":"guang_shui","pinyinInitial":"G"}]
 ```
 
-> hope you will like !
+> Hope you will like !
