@@ -34,7 +34,7 @@ $npm install province-city-area --save
 
 - filed 返回数组元素的属性，可选参数。默认返回数据对象的全部属性，支持传数组或对象，数组元素或对象属性必须为数据对象中的属性。例如：`["id", "name", "pinyin"]`，则返回`[{id:"xx1",name:"xx1",pinyin:"xx1"},{id:"xx2",name:"xx2",pinyin:"xx2"}...]`。同时也支持传对象参数更改返回值的对象属性，例如：`{id:"value",name:"label"}`，则返回`[{value:"xx1",label:"xx1"},{value:"xx2",label:"xx2"}...]`。
 
-- sort 字段和排序规则对象，可选参数。默认按 id 升序。例如：`{id:"desc",pinyin:"desc"}`，排序对象的属性必须为数据对象中的属性，属性定义的顺序影响排序的结果，值为 asc 或 desc，排序功能使用 lodash 的 orderBy() 实现，lodash排序功能对中文支持的不好，如果需要按name排序，可以传pinyin。
+- sort 字段和排序规则对象，可选参数。默认按 id 升序。例如：`{id:"desc",pinyin:"desc"}`，排序对象的属性必须为数据对象中的属性，属性定义的顺序影响排序的结果，值为 asc 或 desc。
 
 ##### getCitys(pid, field, sort)
 
@@ -64,6 +64,53 @@ getCitys(42, ["id", "name"]);
 
 getAreas(4213);
 //=> [{"fullName":"曾都区","id":"421303","name":"曾都","pinyin":"zeng_du","pinyinInitial":"Z"},{"fullName":"随县","id":"421321","name":"随县","pinyin":"sui_xian","pinyinInitial":"S"},{"fullName":"广水市","id":"421381","name":"广水","pinyin":"guang_shui","pinyinInitial":"G"}]
+```
+
+### 价值 (   ) 的排序方法
+
+orderBy(collection, sort)：数组对象排序方法，支持多个属性排序，支持中文排序。
+
+- collection 对象数组。
+- sort 字段和排序规则对象，排序对象的属性必须为数据对象中的属性，属性定义的顺序影响排序的结果，值为 asc 或 desc。
+
+```
+import { orderBy } from "province-city-area";
+const students = [
+    {"id":"11","name":"刘一","total":700,"en":150,"pe":"C"},
+    {"id":"12","name":"陈二","total":700,"en":149,"pe":"B"},
+    {"id":"13","name":"张三","total":700,"en":149,"pe":"A"},
+    {"id":"14","name":"李四","total":700,"en":149,"pe":"A"},
+    {"id":"15","name":"王五","total":720,"en":150,"pe":"A"},
+    {"id":"16","name":"赵六","total":700,"en":150,"pe":"A"},
+    {"id":"17","name":"孙七","total":700,"en":149,"pe":"A"},
+    {"id":"18","name":"周八","total":700,"en":150,"pe":"B"},
+    {"id":"19","name":"吴九","total":720,"en":149,"pe":"A"},
+    {"id":"20","name":"郑十","total":720,"en":150,"pe":"B"}
+];
+
+orderBy(students, { total: "desc", en: "asc" });
+//=>[{"id":"19","name":"吴九","total":720,"en":149,"pe":"A"},
+//=> {"id":"15","name":"王五","total":720,"en":150,"pe":"A"},
+//=> {"id":"20","name":"郑十","total":720,"en":150,"pe":"B"},
+//=> {"id":"12","name":"陈二","total":700,"en":149,"pe":"B"},
+//=> {"id":"13","name":"张三","total":700,"en":149,"pe":"A"},
+//=> {"id":"14","name":"李四","total":700,"en":149,"pe":"A"},
+//=> {"id":"17","name":"孙七","total":700,"en":149,"pe":"A"},
+//=> {"id":"11","name":"刘一","total":700,"en":150,"pe":"C"},
+//=> {"id":"16","name":"赵六","total":700,"en":150,"pe":"A"},
+//=> {"id":"18","name":"周八","total":700,"en":150,"pe":"B"}]
+
+orderBy(students, { pe: "asc", name: "asc" });
+//=>[{"id":"14","name":"李四","total":700,"en":149,"pe":"A"},
+//=> {"id":"17","name":"孙七","total":700,"en":149,"pe":"A"},
+//=> {"id":"15","name":"王五","total":720,"en":150,"pe":"A"},
+//=> {"id":"19","name":"吴九","total":720,"en":149,"pe":"A"},
+//=> {"id":"13","name":"张三","total":700,"en":149,"pe":"A"},
+//=> {"id":"16","name":"赵六","total":700,"en":150,"pe":"A"},
+//=> {"id":"12","name":"陈二","total":700,"en":149,"pe":"B"},
+//=> {"id":"20","name":"郑十","total":720,"en":150,"pe":"B"},
+//=> {"id":"18","name":"周八","total":700,"en":150,"pe":"B"},
+//=> {"id":"11","name":"刘一","total":700,"en":150,"pe":"C"}]
 ```
 
 > Hope you will like !

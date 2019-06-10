@@ -1,6 +1,6 @@
 {
   "name": "province-city-area",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "province-city-area",
   "main": "lib/index.js",
   "scripts": {
@@ -23,7 +23,6 @@
     "babel-preset-es2015": "^6.24.1"
   },
   "dependencies": {
-    "key-value-equal": "^0.1.1",
-    "lodash": "^4.17.11"
+    "key-value-equal": "^0.1.1"
   }
 }
