@@ -26,17 +26,24 @@ const _arrayGroup = function(collection, fields) {
 };
 
 const _singleOrderBy = (collection, field, order) => {
-  return collection
-    .slice()
-    .sort(({ [field]: a }, { [field]: b }) =>
-      order === "desc" || order === "DESC"
-        ? typeof a === "string"
-          ? b.localeCompare(a)
-          : b - a
-        : typeof a === "string"
-        ? a.localeCompare(b)
-        : a - b
-    );
+  return collection.slice().sort(({ [field]: a }, { [field]: b }) => {
+    if (a === null || a === undefined || b === null || b === undefined) {
+      return order === "desc" || order === "DESC"
+        ? b === null || b === undefined
+          ? -1
+          : 1
+        : a === null || a === undefined
+        ? -1
+        : 1;
+    }
+    return order === "desc" || order === "DESC"
+      ? typeof a === "number" && typeof b === "number"
+        ? b - a
+        : new String(b).localeCompare(new String(a))
+      : typeof a === "number" && typeof b === "number"
+      ? a - b
+      : new String(a).localeCompare(new String(b));
+  });
 };
 
 const _orderBy = function(collection, sort) {
