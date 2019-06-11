@@ -66,7 +66,7 @@ getAreas(4213);
 //=> [{"fullName":"曾都区","id":"421303","name":"曾都","pinyin":"zeng_du","pinyinInitial":"Z"},{"fullName":"随县","id":"421321","name":"随县","pinyin":"sui_xian","pinyinInitial":"S"},{"fullName":"广水市","id":"421381","name":"广水","pinyin":"guang_shui","pinyinInitial":"G"}]
 ```
 
-### 价值 (   ) 的排序方法
+### 价值￥ 1?? 的排序方法
 
 orderBy(collection, sort)：数组对象排序方法，支持多个属性排序，支持中文排序。
 
