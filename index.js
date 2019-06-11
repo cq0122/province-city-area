@@ -27,6 +27,9 @@ const _arrayGroup = function(collection, fields) {
 
 const _singleOrderBy = (collection, field, order) => {
   return collection.slice().sort(({ [field]: a }, { [field]: b }) => {
+    if (a === b) {
+      return 0;
+    }
     if (a === null || a === undefined || b === null || b === undefined) {
       return order === "desc" || order === "DESC"
         ? b === null || b === undefined
