@@ -1,6 +1,6 @@
 {
   "name": "province-city-area",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "province-city-area",
   "main": "lib/index.js",
   "scripts": {
