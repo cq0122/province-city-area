@@ -1,14 +1,27 @@
 {
   "name": "province-city-area",
-  "version": "0.1.4",
+  "version": "0.2.0",
   "description": "province-city-area",
-  "main": "lib/index.js",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "data",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
-    "uglify-js": "uglifyjs lib/index.js -o lib/index.js",
-    "uglify-data": "uglifyjs lib/data.js -o lib/data.js",
-    "babel-js": "babel index.js -o lib/index.js",
-    "babel-data": "babel data.js -o lib/data.js",
-    "build": "npm-run-all babel-js babel-data uglify-js uglify-data"
+    "build": "tsup",
+    "typecheck": "tsc --noEmit"
   },
   "keywords": [
     "province-city-area"
@@ -20,9 +33,7 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "babel-preset-es2015": "^6.24.1"
-  },
-  "dependencies": {
-    "key-value-equal": "^0.1.1"
+    "tsup": "^8.5.1",
+    "typescript": "^6.0.3"
   }
 }

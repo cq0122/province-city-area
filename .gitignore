@@ -1,2 +1,19 @@
-/node_modules
-/yarn.lock
+node_modules/
+
+# Package manager lockfiles are not committed for this package.
+yarn.lock
+package-lock.json
+pnpm-lock.yaml
+
+# Build and package artifacts.
+dist/
+*.tgz
+
+# Local editor and OS files.
+.DS_Store
+.vscode/
+.idea/
+
+# Logs and test output.
+*.log
+coverage/

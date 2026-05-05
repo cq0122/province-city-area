@@ -1,153 +1,235 @@
 # province-city-area
 
-> 省市区数据工具包，含有省市区三级数据，支持排序和自定义返回的数据属性。
+中国省、市、区县行政区划数据包，提供 TypeScript 类型声明，支持 ESM、CommonJS、字段映射和多字段排序。
 
-### 安装
+## 特性
 
-```
-$npm install province-city-area --save
-```
+- 内置省级、市级、区县级行政区划数据。
+- 提供 `getProvinces`、`getCitys`、`getAreas` 查询方法。
+- 支持按字段筛选返回结果，也支持把字段名映射成 `value`、`label` 等业务字段。
+- 支持按一个或多个字段排序。
+- 同时发布 ESM、CommonJS 和 `.d.ts` 类型声明。
+- npm 包内保留 `data/province_city_area.sql`，便于导入数据库或做数据校验。
 
-### 数据对象
+## 安装
 
-| 属性           | 类型   | 说明       |
-| :------------- | :----- | :--------- |
-| id             | string | id         |
-| pid            | string | pid        |
-| name           | string | 名称       |
-| full_name      | string | 全称       |
-| short_name     | string | 简称       |
-| pinyin         | string | 拼音       |
-| pinyin_initial | string | 拼音首字母 |
-| area_code      | string | 区号       |
-
-### 数据统计
-
-| id   | province | city                                                         | city_remark                                            | area |
-| :--- | :------- | :----------------------------------------------------------- | :----------------------------------------------------- | :--- |
-| 11   | 北京     | 东城、西城、朝阳、丰台、石景山、海淀、门头沟、房山、通州、顺义、昌平、大兴、怀柔、平谷、密云、延庆 | 16 个市辖区                                            | -    |
-| 12   | 天津     | 和平、河东、河西、南开、河北、红桥、东丽、西青、津南、北辰、武清、宝坻、滨海、宁河、静海、蓟州 | 16 个市辖区                                            | -    |
-| 13   | 河北     | 石家庄、唐山、秦皇岛、邯郸、邢台、保定、张家口、承德、沧州、廊坊、衡水 | 11 个地级市                                            | 188  |
-| 14   | 山西     | 太原、大同、阳泉、长治、晋城、朔州、晋中、运城、忻州、临汾、吕梁 | 11 个地级市                                            | 122  |
-| 15   | 内蒙古   | 呼和浩特、包头、乌海、赤峰、通辽、鄂尔多斯、呼伦贝尔、巴彦淖尔、乌兰察布、兴安盟、锡林郭勒盟、阿拉善盟 | 9 个地级市、3 个盟                                     | 109  |
-| 21   | 辽宁     | 沈阳、大连、鞍山、抚顺、本溪、丹东、锦州、营口、阜新、辽阳、盘锦、铁岭、朝阳、葫芦岛 | 14 个地级市                                            | 100  |
-| 22   | 吉林     | 长春、吉林市、四平、辽源、通化、白山、松原、白城、延边       | 8 个地级市、1 个自治州                                 | 69   |
-| 23   | 黑龙江   | 哈尔滨、齐齐哈尔、鸡西、鹤岗、双鸭山、大庆、伊春、佳木斯、七台河、牡丹江、黑河、绥化、大兴安岭 | 12 个地级市、1 个地区                                  | 134  |
-| 31   | 上海     | 黄浦、徐汇、长宁、静安、普陀、虹口、杨浦、闵行、宝山、嘉定、浦东、金山、松江、青浦、奉贤、崇明 | 16 个市辖区                                            | -    |
-| 32   | 江苏     | 南京、无锡、徐州、常州、苏州、南通、连云港、淮安、盐城、扬州、镇江、泰州、宿迁 | 13 个地级市                                            | 107  |
-| 33   | 浙江     | 杭州、宁波、温州、嘉兴、湖州、绍兴、金华、衢州、舟山、台州、丽水 | 11 个地级市                                            | 90   |
-| 34   | 安徽     | 合肥、芜湖、蚌埠、淮南、马鞍山、淮北、铜陵、安庆、黄山、滁州、阜阳、宿州、六安、亳州、池州、宣城 | 16 个地级市                                            | 120  |
-| 35   | 福建     | 福州、厦门、莆田、三明、泉州、漳州、南平、龙岩、宁德         | 9 个地级市                                             | 84   |
-| 36   | 江西     | 南昌、景德镇、萍乡、九江、新余、鹰潭、赣州、吉安、宜春、抚州、上饶 | 11 个地级市                                            | 100  |
-| 37   | 山东     | 济南、青岛、淄博、枣庄、东营、烟台、潍坊、济宁、泰安、威海、日照、临沂、德州、聊城、滨州、菏泽 | 16 个地级市                                            | 154  |
-| 41   | 河南     | 郑州、开封、洛阳、平顶山、安阳、鹤壁、新乡、焦作、濮阳、许昌、漯河、三门峡、南阳、商丘、信阳、周口、驻马店、济源 | 17 个省辖市、1 个省直管市                              | 181  |
-| 42   | 湖北     | 武汉、黄石、十堰、宜昌、襄阳、鄂州、荆门、孝感、荆州、黄冈、咸宁、随州、恩施、仙桃、潜江、天门、神农架 | 12 个地级市、1 个自治州、3 个省直管县级市、1 个林区    | 101  |
-| 43   | 湖南     | 长沙、株洲、湘潭、衡阳、邵阳、岳阳、常德、张家界、益阳、郴州、永州、怀化、娄底、湘西 | 13 个地级市、1 个自治州                                | 139  |
-| 44   | 广东     | 广州、韶关、深圳、珠海、汕头、佛山、江门、湛江、茂名、肇庆、惠州、梅州、汕尾、河源、阳江、清远、东莞、中山、潮州、揭阳、云浮 | 21 个地级市                                            | 181  |
-| 45   | 广西     | 南宁、柳州、桂林、梧州、北海、防城港、钦州、贵港、玉林、百色、贺州、河池、来宾、崇左 | 14 个地级市                                            | 111  |
-| 46   | 海南     | 海口、三亚、三沙、儋州、五指山、琼海、文昌、万宁、东方、定安、屯昌、澄迈、临高、白沙、昌江、乐东、陵水、保亭、琼中 | 4 个地级市、15 个省直辖县级行政单位                    | 29   |
-| 50   | 重庆     | 万州、涪陵、渝中、大渡口、江北、沙坪坝、九龙坡、南岸、北碚、綦江、大足、渝北、巴南、黔江、长寿、江津、合川、永川、南川、璧山、璧山、潼南、荣昌、开州、梁平、武隆、城口、丰都、垫江、忠县、云阳、奉节、巫山、巫溪、石柱、秀山、酉阳、彭水 | 26 个区、8 个县、4 个自治县                            | -    |
-| 51   | 四川     | 成都、自贡、攀枝花、泸州、德阳、绵阳、广元、遂宁、内江、乐山、南充、眉山、宜宾、广安、达州、雅安、巴中、资阳、阿坝、甘孜、凉山 | 18 个地级市、3 个自治州                                | 186  |
-| 52   | 贵州     | 贵阳、六盘水、遵义、安顺、毕节、铜仁、黔西南、黔东南、黔南   | 6 个地级市、3 个自治州                                 | 88   |
-| 53   | 云南     | 昆明、曲靖、玉溪、保山、昭通、丽江、普洱、临沧、楚雄、红河、文山、西双版纳、大理、德宏、怒江、迪庆 | 8 个地级市、8 个自治州                                 | 129  |
-| 54   | 西藏     | 拉萨、日喀则、昌都、林芝、山南、那曲、阿里                   | 6 个地级市、1 个地区                                   | 78   |
-| 61   | 陕西     | 西安、铜川、宝鸡、咸阳、渭南、延安、汉中、榆林、安康、商洛   | 10 个地级市                                            | 107  |
-| 62   | 甘肃     | 兰州、嘉峪关、金昌、白银、天水、武威、张掖、平凉、酒泉、庆阳、定西、陇南、临夏、甘南 | 12 个地级市、2 个自治州                                | 93   |
-| 63   | 青海     | 西宁、海东、海北、黄南、海南、果洛、玉树、海西               | 2 个地级市、6 个自治州                                 | 45   |
-| 64   | 宁夏     | 银川、石嘴山、吴忠、固原、中卫                               | 5 个地级市                                             | 22   |
-| 65   | 新疆     | 乌鲁木齐、克拉玛依、吐鲁番、哈密、昌吉、博尔塔拉、巴音郭楞、阿克苏、克孜勒苏、喀什、和田、伊犁、塔城、阿勒泰、石河子、阿拉尔、图木舒克、五家渠、北屯、铁门关、双河、可克达拉、昆玉 | 4 个地级市、5 个地区、5 个自治州、9 个自治区直辖县级市 | 119  |
-| 71   | 台湾     | 台北市、新北市、桃园市、台中市、台南市、高雄市、基隆市、新竹市、嘉义市、新竹县、苗栗县、彰化县、南投县、云林县、嘉义县、屏东县、宜兰县、花莲县、台东县、澎湖县、金门县、连江县 | 6 个直辖市、3 市、13 县                                | -    |
-| 81   | 香港     | 中西区、湾仔区、东区、南区、油尖旺区、深水埗区、九龙城区、黄大仙区、观塘区、北区、大埔区、沙田区、西贡区、荃湾区、屯门区、元朗区、葵青区、离岛区 | 18 个区                                                | -    |
-| 82   | 澳门     | 花地玛堂区、圣安多尼堂区、大堂区、望德堂区、风顺堂区、嘉模堂区、圣方济各堂区 | 7 个堂区                                               | -    |
-
-- province、area 的区号为 null，city 的区号不为空。
-- 台湾、香港、澳门的 city 数据中 name、full_name、short_name 相同。
-
-> 数据为个人整理，难免有遗漏和疏忽，如有错误，欢迎指正，谢谢。
-
-### 使用说明
-
-##### getProvinces(field, sort)
-
-- filed 返回数组元素的属性，可选参数。默认返回数据对象的全部属性，支持传数组或对象，数组元素或对象属性必须为数据对象中的属性。例如：`["id", "name", "pinyin"]`，则返回`[{id:"xx1",name:"xx1",pinyin:"xx1"},{id:"xx2",name:"xx2",pinyin:"xx2"}...]`。同时也支持传对象参数更改返回值的对象属性，例如：`{id:"value",name:"label"}`，则返回`[{value:"xx1",label:"xx1"},{value:"xx2",label:"xx2"}...]`。
-
-- sort 字段和排序规则对象，可选参数。默认按 id 升序。例如：`{id:"desc",pinyin:"desc"}`，排序对象的属性必须为数据对象中的属性，属性定义的顺序影响排序的结果，值为 asc 或 desc。
-
-##### getCitys(pid, field, sort)
-
-- pid 省 id，必填参数。
-- filed，参考 getProvinces。
-- sort，参考 getProvinces。
-
-##### getAreas(pid, field, sort)
-
-- pid 地市 id，必填参数。
-- filed，参考 getProvinces。
-- sort，参考 getProvinces。
-
-### 使用示例
-
-```
-import { getProvinces, getCitys, getAreas } from "province-city-area";
-
-getProvinces({ id: "key", name: "label" }, { pinyin: "asc" });
-//=> [{"key":"34","label":"安徽"},{"key":"82","label":"澳门"},{"key":"11","label":"北京"},{"key":"50","label":"重庆"},{"key":"35","label":"福建"},{"key":"62","label":"甘肃"},{"key":"44","label":"广东"},{"key":"45","label":"广西"},{"key":"52","label":"贵州"},{"key":"46","label":"海南"},{"key":"13","label":"河北"},{"key":"41","label":"河南"},{"key":"23","label":"黑龙江"},{"key":"42","label":"湖北"},{"key":"43","label":"湖南"},{"key":"22","label":"吉林"},{"key":"32","label":"江苏"},{"key":"36","label":"江西"},{"key":"21","label":"辽宁"},{"key":"15","label":"内蒙古"},{"key":"64","label":"宁夏"},{"key":"63","label":"青海"},{"key":"37","label":"山东"},{"key":"14","label":"山西"},{"key":"61","label":"陕西"},{"key":"31","label":"上海"},{"key":"51","label":"四川"},{"key":"71","label":"台湾"},{"key":"12","label":"天津"},{"key":"54","label":"西藏"},{"key":"81","label":"香港"},{"key":"65","label":"新疆"},{"key":"53","label":"云南"},{"key":"33","label":"浙江"}]
-
-getCitys(42, { id: "i", name: "n" });
-//=> [{"i":"4201","n":"武汉"},{"i":"4202","n":"黄石"},{"i":"4203","n":"十堰"},{"i":"4205","n":"宜昌"},{"i":"4206","n":"襄阳"},{"i":"4207","n":"鄂州"},{"i":"4208","n":"荆门"},{"i":"4209","n":"孝感"},{"i":"4210","n":"荆州"},{"i":"4211","n":"黄冈"},{"i":"4212","n":"咸宁"},{"i":"4213","n":"随州"},{"i":"4228","n":"恩施"},{"i":"429004","n":"仙桃"},{"i":"429005","n":"潜江"},{"i":"429006","n":"天门"},{"i":"429021","n":"神农架"}]
-
-getCitys(42, ["id", "name"]);
-//=> [{"id":"4201","name":"武汉"},{"id":"4202","name":"黄石"},{"id":"4203","name":"十堰"},{"id":"4205","name":"宜昌"},{"id":"4206","name":"襄阳"},{"id":"4207","name":"鄂州"},{"id":"4208","name":"荆门"},{"id":"4209","name":"孝感"},{"id":"4210","name":"荆州"},{"id":"4211","name":"黄冈"},{"id":"4212","name":"咸宁"},{"id":"4213","name":"随州"},{"id":"4228","name":"恩施"},{"id":"429004","name":"仙桃"},{"id":"429005","name":"潜江"},{"id":"429006","name":"天门"},{"id":"429021","name":"神农架"}]
-
-getAreas(4213);
-//=> [{"fullName":"曾都区","id":"421303","name":"曾都","pinyin":"zeng_du","pinyinInitial":"Z"},{"fullName":"随县","id":"421321","name":"随县","pinyin":"sui_xian","pinyinInitial":"S"},{"fullName":"广水市","id":"421381","name":"广水","pinyin":"guang_shui","pinyinInitial":"G"}]
+```bash
+npm install province-city-area
 ```
 
-### 价值￥ 1?? 的排序方法
+## 快速开始
 
-orderBy(collection, sort)：数组对象排序方法，支持多个属性排序，支持中文排序。
+```ts
+import { getAreas, getCitys, getProvinces } from "province-city-area";
 
-- collection 对象数组。
-- sort 字段和排序规则对象，排序对象的属性必须为数据对象中的属性，属性定义的顺序影响排序的结果，值为 asc 或 desc。
-
+const provinces = getProvinces();
+const hubeiCities = getCitys("42");
+const wuhanAreas = getAreas("4201");
 ```
+
+CommonJS 项目可以这样使用：
+
+```js
+const { getAreas, getCitys, getProvinces } = require("province-city-area");
+```
+
+## 数据规模
+
+当前运行时数据由 `data/province_city_area.sql` 生成：
+
+| 级别 | 数量 |
+| :--- | ---: |
+| 省级 | 34 |
+| 市级 | 470 |
+| 区县级 | 2970 |
+| 合计 | 3474 |
+
+数据包含中国大陆省、自治区、直辖市，以及台湾、香港、澳门数据。
+
+## 数据结构
+
+### ProvinceRecord
+
+```ts
+interface ProvinceRecord {
+  id: string;
+  name: string;
+  fullName: string;
+  shortName: string;
+  pinyin: string;
+  pinyinInitial: string;
+}
+```
+
+### CityRecord
+
+```ts
+interface CityRecord {
+  id: string;
+  name: string;
+  fullName: string;
+  areaCode: string;
+  pinyin: string;
+  pinyinInitial: string;
+}
+```
+
+### AreaRecord
+
+```ts
+interface AreaRecord {
+  id: string;
+  name: string;
+  fullName: string;
+  areaCode: string;
+  pinyin: string;
+  pinyinInitial: string;
+}
+```
+
+说明：
+
+- `id` 为行政区划代码。
+- `name` 为常用名称。
+- `fullName` 为完整名称。
+- `shortName` 主要用于省级简称，例如 `京`、`沪`、`粤`。
+- `areaCode` 为电话区号；没有区号的数据返回空字符串。
+- `pinyin` 使用下划线分隔，例如 `bei_jing`。
+- `pinyinInitial` 为拼音首字母。
+
+## API
+
+### getProvinces(field?, sort?)
+
+获取省级数据。
+
+```ts
+getProvinces();
+getProvinces(["id", "name"]);
+getProvinces({ id: "value", name: "label" });
+getProvinces(undefined, { id: "desc" });
+```
+
+### getCitys(pid, field?, sort?)
+
+获取指定省级行政区下的市级数据。方法名 `getCitys` 保留了旧版本 API 命名，用于兼容历史调用。
+
+```ts
+getCitys("42");
+getCitys(42, ["id", "name", "areaCode"]);
+getCitys("42", { id: "value", name: "label" });
+getCitys("42", undefined, { pinyin: "asc" });
+```
+
+### getAreas(pid, field?, sort?)
+
+获取指定市级行政区下的区县级数据。
+
+```ts
+getAreas("4201");
+getAreas(4201, ["id", "name"]);
+getAreas("4201", { id: "value", name: "label" });
+getAreas("4201", undefined, { id: "desc" });
+```
+
+### orderBy(collection, sort?)
+
+通用数组排序方法。查询方法内部也使用了这个方法处理 `sort` 参数。
+
+```ts
 import { orderBy } from "province-city-area";
-const students = [
-    {"id":"11","name":"刘一","total":700,"en":150,"pe":"C"},
-    {"id":"12","name":"陈二","total":700,"en":149,"pe":"B"},
-    {"id":"13","name":"张三","total":700,"en":149,"pe":"A"},
-    {"id":"14","name":"李四","total":700,"en":149,"pe":"A"},
-    {"id":"15","name":"王五","total":720,"en":150,"pe":"A"},
-    {"id":"16","name":"赵六","total":700,"en":150,"pe":"A"},
-    {"id":"17","name":"孙七","total":700,"en":149,"pe":"A"},
-    {"id":"18","name":"周八","total":700,"en":150,"pe":"B"},
-    {"id":"19","name":"吴九","total":720,"en":149,"pe":"A"},
-    {"id":"20","name":"郑十","total":720,"en":150,"pe":"B"}
-];
 
-orderBy(students, { total: "desc", en: "asc" });
-//=>[{"id":"19","name":"吴九","total":720,"en":149,"pe":"A"},
-//=> {"id":"15","name":"王五","total":720,"en":150,"pe":"A"},
-//=> {"id":"20","name":"郑十","total":720,"en":150,"pe":"B"},
-//=> {"id":"12","name":"陈二","total":700,"en":149,"pe":"B"},
-//=> {"id":"13","name":"张三","total":700,"en":149,"pe":"A"},
-//=> {"id":"14","name":"李四","total":700,"en":149,"pe":"A"},
-//=> {"id":"17","name":"孙七","total":700,"en":149,"pe":"A"},
-//=> {"id":"11","name":"刘一","total":700,"en":150,"pe":"C"},
-//=> {"id":"16","name":"赵六","total":700,"en":150,"pe":"A"},
-//=> {"id":"18","name":"周八","total":700,"en":150,"pe":"B"}]
-
-orderBy(students, { pe: "asc", name: "asc" });
-//=>[{"id":"14","name":"李四","total":700,"en":149,"pe":"A"},
-//=> {"id":"17","name":"孙七","total":700,"en":149,"pe":"A"},
-//=> {"id":"15","name":"王五","total":720,"en":150,"pe":"A"},
-//=> {"id":"19","name":"吴九","total":720,"en":149,"pe":"A"},
-//=> {"id":"13","name":"张三","total":700,"en":149,"pe":"A"},
-//=> {"id":"16","name":"赵六","total":700,"en":150,"pe":"A"},
-//=> {"id":"12","name":"陈二","total":700,"en":149,"pe":"B"},
-//=> {"id":"20","name":"郑十","total":720,"en":150,"pe":"B"},
-//=> {"id":"18","name":"周八","total":700,"en":150,"pe":"B"},
-//=> {"id":"11","name":"刘一","total":700,"en":150,"pe":"C"}]
+const result = orderBy(
+  [
+    { id: "1", name: "武汉市", pinyin: "wu_han" },
+    { id: "2", name: "黄石市", pinyin: "huang_shi" },
+  ],
+  { pinyin: "asc" },
+);
 ```
 
-> Hope you will like !
+## 参数说明
+
+### field
+
+`field` 用于控制返回字段。它支持两种形式：
+
+```ts
+getCitys("42", ["id", "name"]);
+// => [{ id: "4201", name: "武汉市" }, ...]
+
+getCitys("42", { id: "value", name: "label" });
+// => [{ value: "4201", label: "武汉市" }, ...]
+```
+
+如果不传 `field`，会返回完整数据对象。
+
+### sort
+
+`sort` 用于控制排序，值支持 `asc`、`desc`、`ASC`、`DESC`。
+
+```ts
+getCitys("42", undefined, { id: "desc" });
+getCitys("42", undefined, { pinyin: "asc", id: "asc" });
+```
+
+多字段排序会按对象字段声明顺序依次生效。
+
+## 示例
+
+```ts
+import { getAreas, getCitys, getProvinces } from "province-city-area";
+
+const provinceOptions = getProvinces({ id: "value", name: "label" });
+
+const cityOptions = getCitys("42", {
+  id: "value",
+  name: "label",
+});
+
+const areaOptions = getAreas("4201", ["id", "name"]);
+
+console.log(provinceOptions[0]);
+// { value: "11", label: "北京市" }
+
+console.log(cityOptions[0]);
+// { value: "4201", label: "武汉市" }
+
+console.log(areaOptions[0]);
+// { id: "420102", name: "江岸区" }
+```
+
+## 数据文件
+
+仓库中保留两份数据形态：
+
+- `data/province_city_area.sql`：SQL 原始数据，可直接用于数据库导入。
+- `src/data.ts`：由 SQL 生成的运行时数据，随源码构建到 `dist`。
+
+发布到 npm 时会包含 `dist` 和 `data`。业务代码通常只需要从包入口导入方法；如果需要数据库初始化，可以使用包内的 SQL 文件。
+
+## 开发
+
+```bash
+npm install
+npm run typecheck
+npm run build
+```
+
+构建产物会输出到 `dist`：
+
+```text
+dist/index.js
+dist/index.cjs
+dist/index.d.ts
+```
+
+发包前可以先检查 npm 包内容：
+
+```bash
+npm pack --dry-run
+```
+
+## License
+
+MIT
